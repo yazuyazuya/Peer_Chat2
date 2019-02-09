@@ -9,18 +9,15 @@
 import UIKit
 import MultipeerConnectivity
 
-class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessionDelegate {
-    
+class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessionDelegate,  MCNearbyServiceAdvertiserDelegate{
     let serviceType = "LCOC-Chat"
     
-    var browser : MCBrowserViewController!
-    var assistant : MCAdvertiserAssistant!
+    var browser : MCNearbyServiceBrowser!
+    var assistant : MCNearbyServiceAdvertiser!
     var session : MCSession!
     var peerID : MCPeerID!
     
     @IBOutlet weak var chatView1: UITextView!
-    @IBOutlet weak var chatView2: UITextView!
-    
     @IBOutlet weak var messageField: UITextField!
     
     override func viewDidLoad() {
@@ -28,17 +25,18 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         
         //self.peerID = MCPeerID(displayName: UIDevice.currentDevice().name)
         self.peerID = MCPeerID(displayName: UIDevice.current.name)
-        
         self.session = MCSession(peer: peerID)
         self.session.delegate = self
         
         // create the browser viewcontroller with a unique service name
-        self.browser = MCBrowserViewController(serviceType: serviceType, session: self.session)
-        self.browser.delegate = self;
-        self.assistant = MCAdvertiserAssistant(serviceType: serviceType, discoveryInfo: nil, session: self.session)
+        self.browser = MCNearbyServiceBrowser(peer: peerID, serviceType: serviceType)
+        self.browser.delegate = self
+        self.browser.startBrowsingForPeers()
         
+        self.assistant = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: serviceType)
+        self.assistant.delegate = self
+        self.assistant.startAdvertisingPeer()
         // tell the assistant to start advertising our fabulous chat
-        self.assistant.start()
         
     }
     
@@ -81,30 +79,19 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         let message = "\(name) : \(text)\n"
         
         //self.chatView.text = self.chatView.text + message
-        
-        switch peerID {
-        case self.peerID:
-            self.chatView1.text = self.chatView1.text + message
-        default:
-            self.chatView2.text = self.chatView2.text + message
-        }
+        self.chatView1.text = self.chatView1.text + message
         
     }
     
-    @IBAction func showBrowser(_ sender: Any) {
-        // Show the browser view controller
-        self.present(self.browser, animated: true, completion: nil)
-        
+    func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+        print("error")
+    }
+    func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        self.browser.invitePeer(peerID, to: session, withContext: nil, timeout: 60)
     }
     
-    func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {
-        // Called when the browser view controller is dismissed (ie the Done button was tapped)
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func browserViewControllerWasCancelled(_ browserViewController: MCBrowserViewController) {
-        // Called when the browser view controller is cancelled
-        self.dismiss(animated: true, completion: nil)
+    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+        invitationHandler(true, session)
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
