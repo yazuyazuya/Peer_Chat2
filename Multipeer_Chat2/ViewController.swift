@@ -12,6 +12,15 @@ import MultipeerConnectivity
 class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessionDelegate,  MCNearbyServiceAdvertiserDelegate{
     let serviceType = "LCOC-Chat"
     
+    var fileURL: URL {
+        let docsURL = FileManager.default.urls(
+            for: .documentDirectory,
+            in: .userDomainMask
+            )[0]
+        return docsURL.appendingPathComponent("file.txt")
+    }
+    
+    var Name : String?
     var browser : MCNearbyServiceBrowser!
     var assistant : MCNearbyServiceAdvertiser!
     var session : MCSession!
@@ -24,7 +33,9 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
         super.viewDidLoad()
         
         //self.peerID = MCPeerID(displayName: UIDevice.currentDevice().name)
-        self.peerID = MCPeerID(displayName: UIDevice.current.name)
+        self.Name = try? String(contentsOf: fileURL)
+        
+        self.peerID = MCPeerID(displayName: (self.Name != nil) ? self.Name! : "")
         self.session = MCSession(peer: peerID)
         self.session.delegate = self
         
@@ -67,13 +78,8 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
         
         var name: String
         
-        switch peerID {
-        case self.peerID:
-            name = "Me"
-        //break
-        default:
-            name = peerID.displayName
-        }
+        name = peerID.displayName
+        
         
         // Add the name to the message and display it
         let message = "\(name) : \(text)\n"
