@@ -67,7 +67,7 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
     @IBAction func sendChat(_ sender: Any) {
         // Bundle up the text in the message field, and send it off to all connected peers
         
-        let msg = self.messageField.text?.data(using: String.Encoding.utf8, allowLossyConversion: false)
+        let msg = (self.sendData.name + " : " + self.messageField.text!).data(using: String.Encoding.utf8, allowLossyConversion: false)
         
         //var error : NSError?
         
@@ -79,7 +79,7 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
             print("Error sending data: \(String(describing: error.localizedDescription))")
         }
         
-        self.updateChat(text: self.messageField.text!, fromPeer: self.peerID)
+        self.updateChat(text: self.sendData.name + " : " + self.messageField.text!, fromPeer: self.peerID)
         
         self.messageField.text = ""
         
@@ -89,12 +89,9 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
         // Appends some text to the chat view
         // If this peer ID is the local device's peer ID, then show the name as "Me"
         
-        var name: String
-        name = self.sendData.name
-        
         
         // Add the name to the message and display it
-        let message = "\(name) : \(text)\n"
+        let message = "\(text)\n"
         
         //self.chatView.text = self.chatView.text + message
         self.chatView1.text = self.chatView1.text + message
