@@ -26,6 +26,12 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
     var session : MCSession!
     var peerID : MCPeerID!
     
+    override func viewWillAppear(_ animated: Bool){
+        super.viewWillAppear(animated)
+        self.Name = try? String(contentsOf: fileURL)
+        self.peerID = MCPeerID(displayName: (self.Name != nil && self.Name != "") ? self.Name! : "noname")
+    }
+    
     @IBOutlet weak var chatView1: UITextView!
     @IBOutlet weak var messageField: UITextField!
     
@@ -34,8 +40,7 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
         
         //self.peerID = MCPeerID(displayName: UIDevice.currentDevice().name)
         self.Name = try? String(contentsOf: fileURL)
-        
-        self.peerID = MCPeerID(displayName: (self.Name != nil) ? self.Name! : "")
+        self.peerID = MCPeerID(displayName: (self.Name != nil && self.Name! != "") ? self.Name! : "noname")
         self.session = MCSession(peer: peerID)
         self.session.delegate = self
         
