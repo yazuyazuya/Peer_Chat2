@@ -9,28 +9,37 @@
 import UIKit
 import MultipeerConnectivity
 
+var fileURL: URL {
+    let docsURL = FileManager.default.urls(
+        for: .documentDirectory,
+        in: .userDomainMask
+        )[0]
+    return docsURL.appendingPathComponent("file.txt")
+}
+
+class SendData{
+    var name : String
+    init (){
+        let name : String? = try? String(contentsOf: fileURL)
+        self.name = (name != nil && name != "") ? name! : "noname"
+    }
+}
+
 class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessionDelegate,  MCNearbyServiceAdvertiserDelegate{
     let serviceType = "LCOC-Chat"
-    
-    var fileURL: URL {
-        let docsURL = FileManager.default.urls(
-            for: .documentDirectory,
-            in: .userDomainMask
-            )[0]
-        return docsURL.appendingPathComponent("file.txt")
-    }
-    
     var Name : String?
     var browser : MCNearbyServiceBrowser!
     var assistant : MCNearbyServiceAdvertiser!
     var session : MCSession!
     var peerID : MCPeerID!
+    var sendData = SendData()
     
-    override func viewWillAppear(_ animated: Bool){
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.Name = try? String(contentsOf: fileURL)
-        self.peerID = MCPeerID(displayName: (self.Name != nil && self.Name != "") ? self.Name! : "noname")
+        sendData = SendData()
     }
+    
+
     
     @IBOutlet weak var chatView1: UITextView!
     @IBOutlet weak var messageField: UITextField!
@@ -39,8 +48,7 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
         super.viewDidLoad()
         
         //self.peerID = MCPeerID(displayName: UIDevice.currentDevice().name)
-        self.Name = try? String(contentsOf: fileURL)
-        self.peerID = MCPeerID(displayName: (self.Name != nil && self.Name! != "") ? self.Name! : "noname")
+        self.peerID = MCPeerID(displayName: self.sendData.name)
         self.session = MCSession(peer: peerID)
         self.session.delegate = self
         
@@ -82,8 +90,7 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
         // If this peer ID is the local device's peer ID, then show the name as "Me"
         
         var name: String
-        
-        name = peerID.displayName
+        name = self.sendData.name
         
         
         // Add the name to the message and display it
