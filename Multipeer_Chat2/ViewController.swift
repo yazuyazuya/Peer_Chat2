@@ -17,27 +17,41 @@ var fileURL: URL {
     return docsURL.appendingPathComponent("file.txt")
 }
 
+var imageURL: URL {
+    let docsURL = FileManager.default.urls(
+        for: .documentDirectory,
+        in: .userDomainMask
+        )[0]
+    return docsURL.appendingPathComponent("file.png")
+}
+
 class SendData{
-    var name : String
-    init (){
-        let name : String? = try? String(contentsOf: fileURL)
-        self.name = (name != nil && name != "") ? name! : "noname"
+    func sendName() -> String {
+        let file_name: String? = try? String(contentsOf: fileURL)
+        let name = (file_name != nil && file_name != "") ? file_name! : "noname"
+        return name
+    }
+    
+    func sendImage() -> UIImage {
+        let file_image: UIImage? = UIImage(contentsOfFile: imageURL.path)
+        let image = (file_image != nil) ? file_image! : UIImage(named: "Image")!
+        return image
     }
 }
 
+var sendData: SendData = SendData()
+
+
+
 class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessionDelegate,  MCNearbyServiceAdvertiserDelegate{
+    
+    var talks: [String] = []
+    
     let serviceType = "LCOC-Chat"
-    var Name : String?
     var browser : MCNearbyServiceBrowser!
     var assistant : MCNearbyServiceAdvertiser!
     var session : MCSession!
     var peerID : MCPeerID!
-    var sendData = SendData()
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        sendData = SendData()
-    }
     
     @IBOutlet weak var chatView1: UITextView!
     @IBOutlet weak var messageField: UITextField!
@@ -45,9 +59,9 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print(sendData)
         //self.peerID = MCPeerID(displayName: UIDevice.currentDevice().name)
-        self.peerID = MCPeerID(displayName: self.sendData.name)
+        self.peerID = MCPeerID(displayName: sendData.sendName())
         self.session = MCSession(peer: peerID)
         self.session.delegate = self
         
@@ -66,7 +80,7 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
     @IBAction func sendChat(_ sender: Any) {
         // Bundle up the text in the message field, and send it off to all connected peers
         
-        let msg = (self.sendData.name + " : " + self.messageField.text!).data(using: String.Encoding.utf8, allowLossyConversion: false)
+        let msg = (sendData.sendName() + " : " + self.messageField.text!).data(using: String.Encoding.utf8, allowLossyConversion: false)
         
         //var error : NSError?
         
@@ -78,7 +92,7 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
             print("Error sending data: \(String(describing: error.localizedDescription))")
         }
         
-        self.updateChat(text: self.sendData.name + " : " + self.messageField.text!, fromPeer: self.peerID)
+        self.updateChat(text: sendData.sendName() + " : " + self.messageField.text!, fromPeer: self.peerID)
         
         self.messageField.text = ""
         
@@ -90,18 +104,20 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
         
         
         // Add the name to the message and display it
+        self.talks.append(text + "\n")
+        
+        var str = NSMutableAttributedString()
+        
         let attachment = NSTextAttachment()
-        attachment.image = UIImage(named: "Image")
-        attachment.bounds = CGRect(x: 0, y: -4, width: 32, height: 32)
-        
+        attachment.image = sendData.sendImage()
         let strImage = NSAttributedString(attachment: attachment)
-        let strText = NSAttributedString(string: text + "\n")
         
-        let str = NSMutableAttributedString()
-        
-        str.append(self.chatView1.attributedText)
-        str.append(strImage)
-        str.append(strText)
+        attachment.bounds = CGRect(x: 0, y: -4, width: 32, height: 32)
+        for value in self.talks {
+            let strText = NSAttributedString(string: value)
+            str.insert(strImage, at: str.length)
+            str.insert(strText, at: str.length)
+        }
         
         //self.chatView.text = self.chatView.text + message
         self.chatView1.attributedText = str

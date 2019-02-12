@@ -18,22 +18,12 @@ class Profile: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
             // 写真を選ぶビュー
             let pickerView = UIImagePickerController()
             // 写真の選択元をカメラロールにする
-            // 「.camera」にすればカメラを起動できる
             pickerView.sourceType = .photoLibrary
             // デリゲート
             pickerView.delegate = self
             // ビューに表示
             self.present(pickerView, animated: true)
         }
-    }
-    
-    
-    var fileURL: URL {
-        let docsURL = FileManager.default.urls(
-            for: .documentDirectory,
-            in: .userDomainMask
-        )[0]
-        return docsURL.appendingPathComponent("file.txt")
     }
     
     @IBAction func saveName(_ sender: Any) {
@@ -48,6 +38,10 @@ class Profile: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
         let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
         // ビューに表示する
+        guard let _:UIImage = image, let data = image.pngData() else {
+            return
+        }
+        try? data.write(to: imageURL)
         self.Profile_Image.image = image
         // 写真を選ぶビューを引っ込める
         self.dismiss(animated: true)
@@ -57,8 +51,9 @@ class Profile: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.enterName.text = try? String(contentsOf: fileURL)
-        Profile_Image.image = UIImage(named: "Image")
+        self.enterName.text = sendData.sendName()
+        self.Profile_Image.image = sendData.sendImage()
+        print("hello")
     }
     
 }
