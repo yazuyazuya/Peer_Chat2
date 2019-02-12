@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BmF-pt-Ho2">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,11 +15,11 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Multipeer_Chat2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="C1F-CL-Mh7">
-                                <rect key="frame" x="16" y="80" width="343" height="493"/>
+                                <rect key="frame" x="20" y="80" width="374" height="493"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="493" id="zga-Cc-lSf"/>
@@ -28,7 +28,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dT9-vx-nZ6">
-                                <rect key="frame" x="16" y="581" width="264" height="30"/>
+                                <rect key="frame" x="16" y="581" width="303" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="264" id="Puq-wW-9PW"/>
                                     <constraint firstAttribute="height" constant="30" id="Val-Yr-PFz"/>
@@ -38,7 +38,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nYw-zm-btJ">
-                                <rect key="frame" x="306" y="580" width="62" height="30"/>
+                                <rect key="frame" x="306" y="580" width="97" height="30"/>
                                 <state key="normal" title="Send"/>
                                 <connections>
                                     <action selector="sendChat:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zxh-YT-w21"/>
@@ -84,22 +84,36 @@
             <objects>
                 <viewController id="hVG-Xk-MC9" customClass="Profile" customModule="Multipeer_Chat2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8ea-xQ-WHF">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m2l-Om-UJF">
-                                <rect key="frame" x="164" y="153" width="47" height="30"/>
+                                <rect key="frame" x="164" y="153" width="86" height="30"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="saveName:" destination="hVG-Xk-MC9" eventType="touchUpInside" id="UYU-SJ-sIb"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Qaj-HY-r4q">
-                                <rect key="frame" x="66" y="96" width="241" height="30"/>
+                                <rect key="frame" x="66" y="96" width="280" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="igc-bC-IXk">
+                                <rect key="frame" x="132" y="233" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="O3F-ZS-0py"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x5U-Gt-2it">
+                                <rect key="frame" x="169" y="423" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="画像の選択"/>
+                                <connections>
+                                    <action selector="saveImage:" destination="hVG-Xk-MC9" eventType="touchUpInside" id="ik4-PO-no9"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -107,19 +121,23 @@
                             <constraint firstItem="Qaj-HY-r4q" firstAttribute="leading" secondItem="rQr-WO-85A" secondAttribute="leading" constant="66" id="IeF-CM-kGI"/>
                             <constraint firstItem="m2l-Om-UJF" firstAttribute="leading" secondItem="rQr-WO-85A" secondAttribute="leading" constant="164" id="bjZ-SL-ldK"/>
                             <constraint firstItem="Qaj-HY-r4q" firstAttribute="centerX" secondItem="m2l-Om-UJF" secondAttribute="centerX" constant="-1" id="gkz-k1-k4U"/>
+                            <constraint firstItem="igc-bC-IXk" firstAttribute="leading" secondItem="rQr-WO-85A" secondAttribute="leading" constant="132" id="jxX-mh-qeV"/>
                             <constraint firstItem="Qaj-HY-r4q" firstAttribute="centerX" secondItem="8ea-xQ-WHF" secondAttribute="centerX" constant="-1" id="k2x-l7-qpx"/>
                             <constraint firstItem="Qaj-HY-r4q" firstAttribute="top" secondItem="rQr-WO-85A" secondAttribute="top" constant="32" id="nVz-rt-L6v"/>
+                            <constraint firstItem="igc-bC-IXk" firstAttribute="top" secondItem="m2l-Om-UJF" secondAttribute="bottom" constant="50" id="nkr-wX-m9r"/>
+                            <constraint firstItem="igc-bC-IXk" firstAttribute="centerX" secondItem="m2l-Om-UJF" secondAttribute="centerX" id="ues-2j-332"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rQr-WO-85A"/>
                     </view>
                     <navigationItem key="navigationItem" title="プロフィール" id="zOF-FE-Fv3"/>
                     <connections>
+                        <outlet property="Profile_Image" destination="igc-bC-IXk" id="rsU-y2-Fct"/>
                         <outlet property="enterName" destination="Qaj-HY-r4q" id="Piv-wV-4Jo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tpJ-HH-SlJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1845.5999999999999" y="133.5832083958021"/>
+            <point key="canvasLocation" x="1844.9275362318842" y="132.88043478260872"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="y6P-YR-Zrh">
@@ -127,7 +145,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="BmF-pt-Ho2" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6bx-Cd-ZlK">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -140,4 +158,7 @@
             <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Image" width="1500" height="2167"/>
+    </resources>
 </document>

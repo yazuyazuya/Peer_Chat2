@@ -39,10 +39,9 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
         sendData = SendData()
     }
     
-
-    
     @IBOutlet weak var chatView1: UITextView!
     @IBOutlet weak var messageField: UITextField!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,10 +90,21 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
         
         
         // Add the name to the message and display it
-        let message = "\(text)\n"
+        let attachment = NSTextAttachment()
+        attachment.image = UIImage(named: "Image")
+        attachment.bounds = CGRect(x: 0, y: -4, width: 32, height: 32)
+        
+        let strImage = NSAttributedString(attachment: attachment)
+        let strText = NSAttributedString(string: text + "\n")
+        
+        let str = NSMutableAttributedString()
+        
+        str.append(self.chatView1.attributedText)
+        str.append(strImage)
+        str.append(strText)
         
         //self.chatView.text = self.chatView.text + message
-        self.chatView1.text = self.chatView1.text + message
+        self.chatView1.attributedText = str
         
     }
     

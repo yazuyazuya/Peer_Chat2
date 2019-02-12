@@ -8,9 +8,25 @@
 
 import UIKit
 
-class Profile: UIViewController {
+class Profile: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var enterName: UITextField!
+    @IBOutlet weak var Profile_Image: UIImageView!
+    
+    @IBAction func saveImage(_ sender: Any) {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            // 写真を選ぶビュー
+            let pickerView = UIImagePickerController()
+            // 写真の選択元をカメラロールにする
+            // 「.camera」にすればカメラを起動できる
+            pickerView.sourceType = .photoLibrary
+            // デリゲート
+            pickerView.delegate = self
+            // ビューに表示
+            self.present(pickerView, animated: true)
+        }
+    }
+    
     
     var fileURL: URL {
         let docsURL = FileManager.default.urls(
@@ -27,10 +43,22 @@ class Profile: UIViewController {
             encoding: .utf8
         )
     }
+    
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
+        let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        // ビューに表示する
+        self.Profile_Image.image = image
+        // 写真を選ぶビューを引っ込める
+        self.dismiss(animated: true)
+    }
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.enterName.text = try? String(contentsOf: fileURL)
+        Profile_Image.image = UIImage(named: "Image")
     }
     
 }
