@@ -39,13 +39,58 @@ class SendData{
     }
 }
 
+struct UserData {
+    let title: String
+    let image: UIImage?
+}
+extension UserData: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case title
+        case image
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        title = try values.decode(String.self, forKey: .title)
+        
+        let imageDataBase64String = try values.decode(String.self, forKey: .image)
+        if let data = Data(base64Encoded: imageDataBase64String) {
+            image = UIImage(data: data)
+        } else {
+            image = nil
+        }
+    }
+}
+extension UserData: Encodable {
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(title, forKey: .title)
+        
+        if let image = image, let imageData = image.pngData() {
+            let imageDataBase64String = imageData.base64EncodedString()
+            try container.encode(imageDataBase64String, forKey: .image)
+        }
+    }
+}
+
+
 var sendData: SendData = SendData()
+
+class UserTalk{
+    var peerID : MCPeerID
+    var talks: [String]
+    init(peerID: MCPeerID){
+        self.peerID = peerID
+        self.talks = []
+    }
+}
 
 
 
 class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessionDelegate,  MCNearbyServiceAdvertiserDelegate{
     
     var talks: [String] = []
+    var userImages:[MCPeerID : UIImage] = [:]
     
     let serviceType = "LCOC-Chat"
     var browser : MCNearbyServiceBrowser!
@@ -55,7 +100,6 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
     
     @IBOutlet weak var chatView1: UITextView!
     @IBOutlet weak var messageField: UITextField!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,43 +124,52 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
     @IBAction func sendChat(_ sender: Any) {
         // Bundle up the text in the message field, and send it off to all connected peers
         
-        let msg = (sendData.sendName() + " : " + self.messageField.text!).data(using: String.Encoding.utf8, allowLossyConversion: false)
-        
+        /*let msg = (sendData.sendName() + " : " + self.messageField.text!).data(using: String.Encoding.utf8, allowLossyConversion: false)*/
+        let msg = UserData(title: sendData.sendName() + " : " + self.messageField.text!,
+                           image: sendData.sendImage())
         //var error : NSError?
         
         do {
-            try self.session.send(msg!, toPeers: self.session.connectedPeers, with: MCSessionSendDataMode.unreliable)
+            let jsonEncoder = JSONEncoder()
+            let jsonData = try jsonEncoder.encode(msg)
+            try self.session.send(jsonData, toPeers: self.session.connectedPeers, with: MCSessionSendDataMode.unreliable)
             //try print("OK")
             
         } catch {
             print("Error sending data: \(String(describing: error.localizedDescription))")
         }
         
-        self.updateChat(text: sendData.sendName() + " : " + self.messageField.text!, fromPeer: self.peerID)
+        self.updateChat(jsonData: msg, fromPeer: self.peerID)
         
         self.messageField.text = ""
         
     }
     
-    func updateChat(text: String, fromPeer peerID: MCPeerID) {
+    func updateChat(jsonData: UserData, fromPeer peerID: MCPeerID) {
         // Appends some text to the chat view
         // If this peer ID is the local device's peer ID, then show the name as "Me"
         
         
         // Add the name to the message and display it
-        self.talks.append(text + "\n")
+        self.talks.append(jsonData.title + "\n")
         
         var str = NSMutableAttributedString()
         
         let attachment = NSTextAttachment()
-        attachment.image = sendData.sendImage()
+        attachment.image = jsonData.image
         let strImage = NSAttributedString(attachment: attachment)
         
         attachment.bounds = CGRect(x: 0, y: -4, width: 32, height: 32)
         for value in self.talks {
-            let strText = NSAttributedString(string: value)
-            str.insert(strImage, at: str.length)
-            str.insert(strText, at: str.length)
+            if peerID == self.peerID{
+                let strText = NSAttributedString(string: value)
+                str.insert(strImage, at: str.length)
+                str.insert(strText, at: str.length)
+            }else{
+                let strText = NSAttributedString(string: value)
+                str.insert(strImage, at: str.length)
+                str.insert(strText, at: str.length)
+            }
         }
         
         //self.chatView.text = self.chatView.text + message
@@ -140,8 +193,9 @@ class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessio
         // This needs to run on the main queue
         
         DispatchQueue.main.async {
-            let msg = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
-            self.updateChat(text: msg! as String, fromPeer: peerID)
+            let jsonDecoder = JSONDecoder()
+            let user = try! jsonDecoder.decode(UserData.self, from: data)
+            self.updateChat(jsonData: user, fromPeer: peerID)
         }
         
     }

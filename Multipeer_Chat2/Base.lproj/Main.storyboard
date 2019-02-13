@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="C1F-CL-Mh7">
-                                <rect key="frame" x="20" y="80" width="374" height="493"/>
+                                <rect key="frame" x="20" y="80" width="334" height="493"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="493" id="zga-Cc-lSf"/>
@@ -28,27 +28,27 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dT9-vx-nZ6">
-                                <rect key="frame" x="16" y="581" width="303" height="30"/>
+                                <rect key="frame" x="20" y="353" width="303" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="264" id="Puq-wW-9PW"/>
+                                    <constraint firstAttribute="width" constant="303" id="Puq-wW-9PW"/>
                                     <constraint firstAttribute="height" constant="30" id="Val-Yr-PFz"/>
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nYw-zm-btJ">
-                                <rect key="frame" x="306" y="580" width="97" height="30"/>
-                                <state key="normal" title="Send"/>
-                                <connections>
-                                    <action selector="sendChat:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zxh-YT-w21"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qEK-et-wvh">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qEK-et-wvh">
                                 <rect key="frame" x="141" y="627" width="92" height="30"/>
                                 <state key="normal" title="プロフィール"/>
                                 <connections>
                                     <segue destination="hVG-Xk-MC9" kind="show" id="GH8-TN-A9Z"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nYw-zm-btJ">
+                                <rect key="frame" x="331" y="353" width="57" height="30"/>
+                                <state key="normal" title="Send"/>
+                                <connections>
+                                    <action selector="sendChat:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zxh-YT-w21"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -57,15 +57,15 @@
                             <constraint firstItem="qEK-et-wvh" firstAttribute="centerX" secondItem="C1F-CL-Mh7" secondAttribute="centerX" id="0KM-HQ-Vu3"/>
                             <constraint firstItem="qEK-et-wvh" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="141" id="A9X-hr-yHM"/>
                             <constraint firstItem="C1F-CL-Mh7" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="If6-jo-xyB"/>
-                            <constraint firstItem="qEK-et-wvh" firstAttribute="top" secondItem="dT9-vx-nZ6" secondAttribute="bottom" constant="16" id="Jl1-fi-E4p"/>
-                            <constraint firstItem="dT9-vx-nZ6" firstAttribute="top" secondItem="C1F-CL-Mh7" secondAttribute="bottom" constant="8" id="MnB-42-V8V"/>
-                            <constraint firstItem="nYw-zm-btJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="306" id="Qcr-53-7A6"/>
-                            <constraint firstItem="nYw-zm-btJ" firstAttribute="trailing" secondItem="C1F-CL-Mh7" secondAttribute="trailing" constant="9" id="Rut-v4-tON"/>
+                            <constraint firstItem="qEK-et-wvh" firstAttribute="top" secondItem="dT9-vx-nZ6" secondAttribute="bottom" constant="244" id="Jl1-fi-E4p"/>
+                            <constraint firstItem="dT9-vx-nZ6" firstAttribute="top" secondItem="C1F-CL-Mh7" secondAttribute="bottom" constant="-220" id="MnB-42-V8V"/>
+                            <constraint firstItem="nYw-zm-btJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="331" id="Qcr-53-7A6"/>
+                            <constraint firstItem="nYw-zm-btJ" firstAttribute="trailing" secondItem="C1F-CL-Mh7" secondAttribute="trailing" constant="34" id="Rut-v4-tON"/>
                             <constraint firstItem="C1F-CL-Mh7" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="VOZ-T7-Ube"/>
-                            <constraint firstItem="dT9-vx-nZ6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="oTX-Dc-br1"/>
-                            <constraint firstItem="nYw-zm-btJ" firstAttribute="top" secondItem="dT9-vx-nZ6" secondAttribute="top" constant="-1" id="w0T-wM-Ce7"/>
+                            <constraint firstItem="dT9-vx-nZ6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="oTX-Dc-br1"/>
+                            <constraint firstItem="nYw-zm-btJ" firstAttribute="top" secondItem="dT9-vx-nZ6" secondAttribute="top" id="w0T-wM-Ce7"/>
                             <constraint firstItem="C1F-CL-Mh7" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="xba-Y1-ESn"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dT9-vx-nZ6" secondAttribute="trailing" constant="95" id="ywH-2L-yjM"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="dT9-vx-nZ6" secondAttribute="trailing" constant="51" id="ywH-2L-yjM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

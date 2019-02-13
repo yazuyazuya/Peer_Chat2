@@ -56,4 +56,9 @@ class Profile: UIViewController, UIImagePickerControllerDelegate, UINavigationCo
         print("hello")
     }
     
+    // キーボード関連 - ここから
+    // Notification発行
+    // ここまで
+    
+    
 }
