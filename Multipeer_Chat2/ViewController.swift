@@ -86,7 +86,6 @@ class UserTalk{
 }
 
 
-
 class ViewController: UIViewController, MCNearbyServiceBrowserDelegate, MCSessionDelegate,  MCNearbyServiceAdvertiserDelegate{
     
     var talks: [String] = []
